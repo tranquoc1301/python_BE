@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Confirmation</title>
+    <link
+      href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #f0f2f5;
+        font-family: "Inter", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .card {
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        padding: 50px;
+        text-align: center;
+        width: 100%;
+        max-width: 600px;
+        transition: transform 0.3s;
+      }
+      .card:hover {
+        transform: translateY(-10px);
+      }
+      .alert {
+        background-color: #eaffea;
+        border-left: 8px solid #28a745;
+        color: #2d6a4f;
+        border-radius: 12px;
+        padding: 40px;
+        margin-bottom: 40px;
+      }
+      .alert-heading {
+        font-weight: bold;
+        font-size: 2.2rem;
+        margin-bottom: 20px;
+      }
+      .btn {
+        background-color: #2563eb;
+        color: white;
+        border: none;
+        padding: 16px 32px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 1.2rem;
+        transition: background-color 0.3s, transform 0.3s;
+        margin-top: 40px;
+        display: inline-block;
+      }
+      .btn:hover {
+        background-color: #1e3a8a;
+        transform: translateY(-8px);
+      }
+      .footer {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 1.2rem;
+        color: #6b7280;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="alert" role="alert">
+        <h4 class="alert-heading">Account Confirmation Successful!</h4>
+        <p>
+          Thank you for confirming your email address. Your account is now
+          active.
+        </p>
+        <hr />
+        <p class="mb-0">
+          You can now log in to your account and explore all our features!
+        </p>
+      </div>
+      <div class="footer">
+        <p>
+          If you have any questions or concerns, please don't hesitate to
+          <a href="" class="text-blue-600 underline">contact us</a>.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
+
