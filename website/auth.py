@@ -5,7 +5,10 @@ from .db import db
 from .models import Students
 from flask_login import login_user
 from itsdangerous import URLSafeTimedSerializer
+from flask_jwt_extended import create_access_token, create_refresh_token
 import os
+from datetime import timedelta
+
 
 # Khởi tạo các thành phần
 bcrypt = Bcrypt()
@@ -16,23 +19,35 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['POST'])
 def login():
-    username = request.json.get('username')
-    password = request.json.get('password')
+    try:
+        # Lấy username và password từ JSON của request
+        username = request.json.get('username')
+        password = request.json.get('password')
 
-    student = Students.query.filter_by(username=username).first()
+        # Truy vấn student từ DB
+        student = Students.query.filter_by(username=username).first()
 
-    # Kiểm tra xem người dùng có hoạt động hay không
-    if student and student.is_active and bcrypt.check_password_hash(student.password, password):
-        login_user(student)
-        return jsonify({
-            "message": "Login successful!",
-            "user": {
-                "id": student.id,
-                "fullname": student.fullname
-            }
-        }), 200
+        # Kiểm tra tồn tại, trạng thái hoạt động và xác thực mật khẩu
+        if student and bcrypt.check_password_hash(student.password, password):
+            # Tạo access token và refresh token
+            access_token = create_access_token(
+                identity=student.id, expires_delta=timedelta(hours=1))
+            refresh_token = create_refresh_token(identity=student.id)
 
-    return jsonify({"error": "Incorrect username or password, or the account is inactive."}), 401
+            return jsonify({
+                "message": "Login successful!",
+                "access_token": access_token,
+                "refresh_token": refresh_token,
+                "user": {
+                    "id": student.id,
+                    "fullname": student.fullname
+                }
+            }), 200
+
+        return jsonify({"error": "Incorrect username or password, or the account is inactive."}), 401
+
+    except Exception as e:
+        return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
 
 
 @auth.route('/signup', methods=['POST'])
@@ -113,4 +128,3 @@ def confirm_email(token):
     student.is_active = True
     db.session.commit()
     return render_template('mail_confirm_success.html'), 200
-

@@ -113,3 +113,23 @@ class favorites(db.Model):
     def __init__(self, book_id, student_id):
         self.book_id = book_id
         self.student_id = student_id
+
+
+class Rating(db.Model):
+    __tablename__ = 'ratings'
+
+    id = db.Column(db.Integer, primary_key=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('books.id'), nullable=False)
+    student_id = db.Column(db.String(10), db.ForeignKey(
+        'students.id'), nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
+    created_on = db.Column(db.TIMESTAMP, nullable=True,
+                           server_default=db.func.current_timestamp())
+    updated_on = db.Column(db.TIMESTAMP, nullable=True,
+                           server_default=db.func.current_timestamp(),
+                           onupdate=db.func.current_timestamp())
+
+    def __init__(self, book_id, student_id, rating):
+        self.book_id = book_id
+        self.student_id = student_id
+        self.rating = rating

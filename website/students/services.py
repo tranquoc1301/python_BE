@@ -10,7 +10,7 @@ students_schema = StudentSchema(many=True)
 def add_student_service():
     data = request.get_json()
 
-    errors = students_schema.validate(data)
+    errors = student_schema.validate(data)
     if errors:
         return jsonify(errors), 400
 
@@ -52,20 +52,14 @@ def update_student_service(id):
 
     data = request.get_json()
 
-    errors = students_schema.validate(data)
-    if errors:
-        return jsonify(errors), 400
-
     try:
-        student.fullname = data['fullname']
-        student.gender = data['gender']
-        student.username = data['username']
-        student.email = data['email']
-        student.password = data['password']
+        for key, value in data.items():
+            if getattr(student, key) != value:
+                setattr(student, key, value)
 
         db.session.commit()
 
-        return student_schema.jsonify(student), 200
+        return jsonify({"message": "Student updated successfully"}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
