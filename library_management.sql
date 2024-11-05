@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 31, 2024 at 03:25 PM
+-- Generation Time: Nov 05, 2024 at 05:12 AM
 -- Server version: 8.0.39
 -- PHP Version: 8.2.12
 
@@ -41,13 +41,6 @@ CREATE TABLE `books` (
   `file_path` varchar(255) DEFAULT NULL,
   `average_rating` float DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `books`
---
-
-INSERT INTO `books` (`id`, `category_id`, `title`, `publish_year`, `author`, `publisher`, `summary`, `cover`, `view_count`, `download_count`, `file_path`, `average_rating`) VALUES
-(4, 11, 'Python Programming', '2022', 'John Doe', 'Tech Books Publishing', 'A comprehensive guide to Python programming.', 'https://example.com/covers/python.jpg', 10, 5, '/books/python_programming.pdf', 0);
 
 -- --------------------------------------------------------
 
@@ -117,7 +110,8 @@ CREATE TABLE `ratings` (
   `book_id` int NOT NULL,
   `student_id` varchar(10) NOT NULL,
   `rating` tinyint NOT NULL,
-  `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `created_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -141,13 +135,6 @@ CREATE TABLE `students` (
   `updated_on` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `is_active` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `students`
---
-
-INSERT INTO `students` (`id`, `fullname`, `gender`, `class_name`, `username`, `email`, `password`, `avatar`, `bookmarks`, `role`, `created_on`, `updated_on`, `is_active`) VALUES
-('102220335', 'Tran Quoc', 'male', '22T_Nhat2', 'tranquoc1301', 'tranquoc1301@gmail.com', '$2b$12$oYfFuXF9Yo53OnA0sQmPreayIA5ivOSPkNOFF4GwB9FvHqX38B3Z.', NULL, NULL, 'user', '2024-10-30 09:37:30', '2024-10-30 09:37:30', 0);
 
 --
 -- Indexes for dumped tables
@@ -207,7 +194,7 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `books`
 --
 ALTER TABLE `books`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `category`
