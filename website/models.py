@@ -53,8 +53,9 @@ class Books(db.Model):
     view_count = db.Column(db.Integer, default=0)
     download_count = db.Column(db.Integer, default=0)
     file_path = db.Column(db.String(255), default=None)
+    average_rating = db.Column(db.Float, default=0)
 
-    def __init__(self, category_id, title, publish_year, author, publisher, summary=None, cover=None, view_count=0, download_count=0,  file_path=None):
+    def __init__(self, category_id, title, publish_year, author, publisher, summary=None, cover=None, view_count=0, download_count=0,  file_path=None, average_rating=0):
         self.category_id = category_id
         self.title = title
         self.publish_year = publish_year
@@ -65,6 +66,7 @@ class Books(db.Model):
         self.view_count = view_count
         self.download_count = download_count
         self.file_path = file_path
+        self.average_rating = average_rating
 
 
 class Category(db.Model):

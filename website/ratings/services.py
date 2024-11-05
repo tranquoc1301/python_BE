@@ -1,8 +1,13 @@
+from ..models import Rating, Book
 from flask import request, jsonify, abort
 from ..db import db
 from ..library_ma import RatingSchema
 from ..models import Rating
 from sqlalchemy.exc import IntegrityError
+
+rating_schema = RatingSchema()
+ratings_schema = RatingSchema(many=True)
+
 
 rating_schema = RatingSchema()
 ratings_schema = RatingSchema(many=True)
@@ -15,7 +20,7 @@ def add_rating_service():
     if errors:
         return jsonify({"errors": errors}), 400
 
-    # Kiểm tra rating có trong khoảng 1-5
+    # Check if rating is in the range of 1-5
     rating_value = data.get('rating')
     if rating_value < 1 or rating_value > 5:
         return jsonify({"error": "Rating must be between 1 and 5."}), 400
@@ -30,6 +35,17 @@ def add_rating_service():
 
         db.session.add(new_rating)
         db.session.commit()
+
+        # Calculate the new average rating for the book
+        average_rating = Rating.query.filter_by(
+            book_id=new_rating.book_id).with_entities(db.func.avg(Rating.rating)).scalar()
+
+        # Update the average_rating field in the books table
+        book = Book.query.get(new_rating.book_id)
+        if book:
+            book.average_rating = average_rating
+            db.session.commit()
+
         return jsonify(rating_schema.dump(new_rating)), 201
 
     except IntegrityError:

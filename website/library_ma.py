@@ -10,7 +10,7 @@ class StudentSchema(ma.Schema):
 class BookSchema(ma.Schema):
     class Meta:
         fields = ("id", "category_id", "title", "publish_year",
-                  "author", "publisher", "summary", "cover", "view_count", "download_count", "file_path")
+                  "author", "publisher", "summary", "cover", "view_count", "download_count", "file_path", "average_rating")
 
 
 class CategorySchema(ma.Schema):
@@ -27,3 +27,9 @@ class CommentSchema(ma.Schema):
 class FavoriteSchema(ma.Schema):
     class Meta:
         fields = ("id", "book_id", "student_id", "added_on")
+
+
+class RatingSchema(ma.Schema):
+    class Meta:
+        fields = ("id", "book_id", "student_id",
+                  "rating", "created_on", "updated_on")

@@ -1,7 +1,7 @@
 from flask import send_file, request, jsonify, abort
 from ..db import db
 from ..library_ma import BookSchema
-from ..models import Books
+from ..models import Books, Rating
 from sqlalchemy.exc import IntegrityError
 
 book_schema = BookSchema()
@@ -49,7 +49,6 @@ def get_book_by_id_service(id):
 def get_all_books_service():
     book_list = Books.query.all()
     return books_schema.jsonify(book_list) if book_list else jsonify({"message": "Empty book list"}), 200
-
 
 def get_pdf_service(book_id: int):
     book = Books.query.get(book_id)
